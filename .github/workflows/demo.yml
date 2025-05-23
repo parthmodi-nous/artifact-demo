@@ -1,4 +1,4 @@
-name: Deploy website
+name: Artifatc demo workflow
 on:
   push:
     branches:
