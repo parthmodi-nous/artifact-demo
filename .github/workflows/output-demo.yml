@@ -4,16 +4,27 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     outputs:
-      node_version: ${{ steps.step1.outputs.output1 }}
+      node_version: ${{ steps.set_node_version.outputs.NODE_VERSION }}
     steps:
-      - id: step1
-        name: Generate output
+      - name: Checkout repository # Good practice
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x" # Or any version you want
+
+      - id: set_node_version
+        name: capture Node.js version
         run: |
           NODE_VERSION=$(node -v)
+          echo "Captured Node.js version: $NODE_VERSION"
+
           echo "NODE_VERSION=$NODE_VERSION" >> $GITHUB_OUTPUT
   job2:
     runs-on: ubuntu-latest
     needs: job1
     steps:
       - name: Use output from job1
+        # This part was already correct, assuming job1's output name is 'node_version'
         run: echo "Output from job1 ${{ needs.job1.outputs.node_version }}"
