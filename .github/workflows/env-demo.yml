@@ -4,8 +4,6 @@ jobs:
   use_env:
     runs-on: ubuntu-latest
     environment: dev
-    env:
-      ENV1: ${{vars.ENV1}}
     steps:
       - name: Use env variable
         run: echo "${{vars.ENV1}}"
