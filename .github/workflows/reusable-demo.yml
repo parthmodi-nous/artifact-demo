@@ -5,6 +5,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Project setup
         uses: ./.github/workflows/reusable-project-setup.yml@main
         with:
@@ -16,6 +19,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Project setup
         uses: ./.github/workflows/reusable-project-setup.yml@main
         with:
@@ -27,6 +33,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Project setup
         uses: ./.github/workflows/reusable-project-setup.yml@main
         with:
