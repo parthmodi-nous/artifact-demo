@@ -12,4 +12,4 @@ jobs:
     needs: call-reusable-build-workflow
     steps:
       - name: Deploy Application
-        run: echo "Deploying application..."
+        run: echo "Deploying application... ${{needs.call-reusable-build-workflow.outputs.build-status}}"

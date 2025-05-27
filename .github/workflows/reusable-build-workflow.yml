@@ -7,9 +7,15 @@ on:
         type: number
         description: "Node.js version to use"
         default: 22
+    outputs:
+      build-status:
+        description: "Status of the build job"
+        value: ${{ jobs.build.outputs.build-status }}
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      build-status: ${{ steps.set-output.outputs.build-status }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -31,3 +37,7 @@ jobs:
 
       - name: Build Project
         run: npm run build
+
+      - name: set output
+        id: set-output
+        run: echo "build-status=${{ job.status }}" >> $GITHUB_OUTPUT
