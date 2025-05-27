@@ -5,8 +5,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      # --- REMOVED: - name: Checkout Code
-      # ---          uses: actions/checkout@v4
+      - name: Checkout Code # <-- Keep this! It's needed for the job to find the reusable workflow file.
+        uses: actions/checkout@v4
 
       - name: Project setup
         uses: ./.github/workflows/reusable-project-setup.yml@main # Ensure @main or your default branch
@@ -18,10 +18,10 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: lint # Consider adding 'needs' to control job execution order (e.g., test after lint)
+    needs: lint # Good practice to chain jobs
     steps:
-      # --- REMOVED: - name: Checkout Code
-      # ---          uses: actions/checkout@v4
+      - name: Checkout Code # <-- Keep this!
+        uses: actions/checkout@v4
 
       - name: Project setup
         uses: ./.github/workflows/reusable-project-setup.yml@main
@@ -33,10 +33,10 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: [lint, test] # Consider adding 'needs' to ensure build runs after lint and test
+    needs: [lint, test] # Good practice to chain jobs
     steps:
-      # --- REMOVED: - name: Checkout Code
-      # ---          uses: actions/checkout@v4
+      - name: Checkout Code # <-- Keep this!
+        uses: actions/checkout@v4
 
       - name: Project setup
         uses: ./.github/workflows/reusable-project-setup.yml@main
