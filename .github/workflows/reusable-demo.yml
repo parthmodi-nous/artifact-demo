@@ -1,4 +1,4 @@
-name: Reusable Build workflow
+name: Reusable Demo
 on: workflow_dispatch
 # This workflow demonstrates how to use reusable workflows for linting, testing, and building a project.
 jobs:
