@@ -8,18 +8,21 @@ jobs:
       node-version: 24
 
   lint:
+    needs: reusable-project-setup
     runs-on: ubuntu-latest
     steps:
       - name: Run Lint
         run: npm run lint
 
   test:
+    needs: reusable-project-setup
     runs-on: ubuntu-latest
     steps:
       - name: Run Tests
         run: npm test
 
   build:
+    needs: reusable-project-setup
     runs-on: ubuntu-latest
     steps:
       - name: Build Project
