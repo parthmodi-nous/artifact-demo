@@ -1,3 +1,4 @@
+# Automate building an application across multiple OS (Ubuntu/Windows) and Node.js versions (18, 20, 22) using a matrix strategy.
 name: Matrix job demo
 on: workflow_dispatch
 jobs:

@@ -1,0 +1,36 @@
+name: Reusable Build workflow
+on: workflow_dispatch
+# This workflow demonstrates how to use reusable workflows for linting, testing, and building a project.
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Project setup
+        uses: ./.github/workflows/reusable-project-setup.yml
+        with:
+          node-version: 24
+
+      - name: Run Lint
+        run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Project setup
+        uses: ./.github/workflows/reusable-project-setup.yml
+        with:
+          node-version: 24
+
+      - name: Run Tests
+        run: npm test
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Project setup
+        uses: ./.github/workflows/reusable-project-setup.yml
+        with:
+          node-version: 24
+
+      - name: Build Project
+        run: npm run build
