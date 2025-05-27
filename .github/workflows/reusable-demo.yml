@@ -9,7 +9,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Project setup
-        uses: ./.github/workflows/reusable-project-setup.yml@main # Ensure @main or your default branch
+        uses: ./.github/workflows/reusable-project-setup.yml # Ensure @main or your default branch
         with:
           node-version: "24.x" # It's good practice to pass as a string, e.g., '24.x'
 
@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Project setup
-        uses: ./.github/workflows/reusable-project-setup.yml@main
+        uses: ./.github/workflows/reusable-project-setup.yml
         with:
           node-version: "24.x"
 
@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Project setup
-        uses: ./.github/workflows/reusable-project-setup.yml@main
+        uses: ./.github/workflows/reusable-project-setup.yml
         with:
           node-version: "24.x"
 
