@@ -2,28 +2,46 @@ name: Reusable Build workflow
 on: workflow_dispatch
 # This workflow demonstrates how to use reusable workflows for linting, testing, and building a project.
 jobs:
-  reusable-project-setup:
-    uses: ./.github/workflows/reusable-project-setup.yml
-    with:
-      node-version: 24
-
   lint:
-    needs: reusable-project-setup
     runs-on: ubuntu-latest
     steps:
+      # --- REMOVED: - name: Checkout Code
+      # ---          uses: actions/checkout@v4
+
+      - name: Project setup
+        uses: ./.github/workflows/reusable-project-setup.yml@main # Ensure @main or your default branch
+        with:
+          node-version: "24.x" # It's good practice to pass as a string, e.g., '24.x'
+
       - name: Run Lint
         run: npm run lint
 
   test:
-    needs: reusable-project-setup
     runs-on: ubuntu-latest
+    needs: lint # Consider adding 'needs' to control job execution order (e.g., test after lint)
     steps:
+      # --- REMOVED: - name: Checkout Code
+      # ---          uses: actions/checkout@v4
+
+      - name: Project setup
+        uses: ./.github/workflows/reusable-project-setup.yml@main
+        with:
+          node-version: "24.x"
+
       - name: Run Tests
         run: npm test
 
   build:
-    needs: reusable-project-setup
     runs-on: ubuntu-latest
+    needs: [lint, test] # Consider adding 'needs' to ensure build runs after lint and test
     steps:
+      # --- REMOVED: - name: Checkout Code
+      # ---          uses: actions/checkout@v4
+
+      - name: Project setup
+        uses: ./.github/workflows/reusable-project-setup.yml@main
+        with:
+          node-version: "24.x"
+
       - name: Build Project
         run: npm run build
