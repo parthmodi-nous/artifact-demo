@@ -42,3 +42,4 @@ runs:
   - name: Set output for build path
     id: set-build-path
     run: echo "build-path=dist" >> $GITHUB_OUTPUT
+    shell: bash
