@@ -1,14 +1,21 @@
 name: Frontend CI
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   run-ci:
     runs-on: ubuntu-latest
+    outputs:
+      output-build-path: ${{ steps.run-ci-checks.outputs.build-path }}
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run Frontend CI Checks
+      - id: run-ci-checks
         uses: ./.github/actions/ci-checks
         with:
           node-version: "22"
+          run-tests: "false" # Skipping tests, e.g., for hotfix branch
+
+      - name: Use build path from composite output
+        run: echo "Build folder is at ${{ steps.run-ci-checks.outputs.build-path }}"

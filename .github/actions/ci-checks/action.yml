@@ -1,14 +1,23 @@
 name: "Frontend CI Checks"
-description: "Reusable CI checks for all React/Next.js projects"
+description: "Reusable CI pipeline for frontend apps with optional test run"
+
 inputs:
   node-version:
     required: false
     default: "20"
+  run-tests:
+    required: false
+    default: "true" # Can be "false" to skip tests
+
+outputs:
+  build-path:
+    description: "Path to build folder"
+    value: "./build"
 
 runs:
   using: "composite"
   steps:
-  - name: Set up Node.js
+  - name: Setup Node.js
     uses: actions/setup-node@v4
     with:
       node-version: ${{ inputs.node-version }}
@@ -21,10 +30,15 @@ runs:
     run: npm run lint
     shell: bash
 
-  - name: Run tests
+  - name: Conditionally run tests
+    if: ${{ inputs.run-tests == 'true' }}
     run: npm test
     shell: bash
 
   - name: Build project
     run: npm run build
     shell: bash
+
+  - name: Set output for build path
+    id: set-build-path
+    run: echo "build-path=dist" >> $GITHUB_OUTPUT
