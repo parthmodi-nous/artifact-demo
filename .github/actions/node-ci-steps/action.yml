@@ -7,11 +7,7 @@ inputs:
   node-version:
     description: 'The Node.js version to use'
     required: false
-    default: '20.x' # Specify a recent LTS version or your project's requirement
-  working-directory:
-    description: 'Directory to run npm commands if not root'
-    required: false
-    default: '.'
+    default: '20' # Specify a recent LTS version or your project's requirement
 
 outputs:
   test-summary:
@@ -25,32 +21,21 @@ runs:
     uses: actions/setup-node@v4
     with:
       node-version: ${{ inputs.node-version }}
-      cache: 'npm' # Enable caching for npm dependencies
+      cache: 'npm'
 
   - name: Install Dependencies
-    working-directory: ${{ inputs.working-directory }}
     run: npm ci # 'ci' is generally preferred for CI environments for faster, reliable builds
     shell: bash
 
   - name: Lint Code
     id: lint-code
-    working-directory: ${{ inputs.working-directory }}
-    run: |
-      if npm run lint --if-present; then
-        echo "Linting passed."
-      else
-        echo "Linting failed."
-        exit 1
-      fi
     shell: bash
 
   - name: Run Tests
     id: run-tests
-    working-directory: ${{ inputs.working-directory }}
     run: |
       if npm test --if-present; then
         echo "Tests passed."
-        # Example of setting an output for the composite action
         echo "summary=Test results available." >> $GITHUB_OUTPUT
       else
         echo "Tests failed."

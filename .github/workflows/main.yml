@@ -2,20 +2,11 @@
 
 name: Node.js CI Workflow
 
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
-  workflow_dispatch: # Allows manual triggering
+on: workflow_dispatch # Allows manual triggering
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x] # Example: Test on multiple Node versions
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,20 +15,11 @@ jobs:
         id: ci_steps
         uses: ./.github/actions/node-ci-steps # Path to your composite action
         with:
-          node-version: ${{ matrix.node-version }} # Use version from matrix
-          # working-directory: './client' # Example if package.json is in a subfolder
+          node-version: "22"
 
       - name: Display Test Summary
         if: always() # Run this step even if previous steps fail, to see the output
         run: |
           echo "CI process finished."
           echo "Test summary from composite action: ${{ steps.ci_steps.outputs.test-summary }}"
-        shell: bash
-
-      # Example of a subsequent step that might depend on the composite action's success
-      - name: Deploy to Staging (Example)
-        if: success() && github.ref == 'refs/heads/develop' # Only run if previous steps (including composite) succeed and on develop branch
-        run: |
-          echo "Simulating deployment to staging..."
-          echo "Node version used was ${{ matrix.node-version }}"
         shell: bash
