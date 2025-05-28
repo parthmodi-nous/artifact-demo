@@ -1,25 +1,13 @@
-# .github/workflows/main.yml
+name: CI
 
-name: Node.js CI Workflow
-
-on: workflow_dispatch # Allows manual triggering
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  build-and-test:
+  lint-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run Node.js CI Steps (Composite Action)
-        id: ci_steps
-        uses: ./.github/actions/node-ci-steps # Path to your composite action
-        with:
-          node-version: "22"
-
-      - name: Display Test Summary
-        if: always() # Run this step even if previous steps fail, to see the output
-        run: |
-          echo "CI process finished."
-          echo "Test summary from composite action: ${{ steps.ci_steps.outputs.test-summary }}"
-        shell: bash
+      - name: Reuse composite action
+        uses: ./.github/actions/lint-and-test
