@@ -1,0 +1,42 @@
+name: Node.js Ci Workflow
+on: workflow_dispatch
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Node.js Project CI steps
+        uses: ./.github/actions/node-ci-steps
+        with:
+          node-version: "22"
+
+      - name: Lint the code
+        run: npm run lint
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Node.js Project CI steps
+        uses: ./.github/actions/node-ci-steps
+        with:
+          node-version: "22"
+
+      - name: Run tests
+        run: npm run test
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Node.js Project CI steps
+        uses: ./.github/actions/node-ci-steps
+        with:
+          node-version: "22"
+
+      - name: Build the project
+        run: npm run build
