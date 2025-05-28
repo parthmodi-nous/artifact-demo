@@ -1,31 +1,60 @@
-name: Node.js Project CI steps
-description: Install the specific Node.js verion, sets up the Node.js dependencies, lints the code, runs tests and builds the project.
+# .github/actions/node-ci-steps/action.yml
+
+name: 'Node.js Project CI Steps'
+description: 'Sets up Node.js, installs dependencies, lints, and tests a project'
 
 inputs:
   node-version:
-    description: Node.js version to use
-    required: true
-    default: '22'
+    description: 'The Node.js version to use'
+    required: false
+    default: '20.x' # Specify a recent LTS version or your project's requirement
+  working-directory:
+    description: 'Directory to run npm commands if not root'
+    required: false
+    default: '.'
+
+outputs:
+  test-summary:
+    description: 'A summary of the test execution (e.g., path to results)'
+    value: ${{ steps.run-tests.outputs.summary }} # Example: output from test step
 
 runs:
   using: "composite"
   steps:
-  - name: Set up the Node.js version ${{inputs.node-version}}
+  - name: Set up Node.js
     uses: actions/setup-node@v4
     with:
       node-version: ${{ inputs.node-version }}
+      cache: 'npm' # Enable caching for npm dependencies
 
-  - name: Install dependencies
-    run: npm ci
+  - name: Install Dependencies
+    working-directory: ${{ inputs.working-directory }}
+    run: npm ci # 'ci' is generally preferred for CI environments for faster, reliable builds
     shell: bash
-  # - name: Lint the code
-  #   run: npm run lint
-  #   shell: bash
 
-  # - name: Run tests
-  #   run: npm run test
-  #   shell: bash
+  - name: Lint Code
+    id: lint-code
+    working-directory: ${{ inputs.working-directory }}
+    run: |
+      if npm run lint --if-present; then
+        echo "Linting passed."
+      else
+        echo "Linting failed."
+        exit 1
+      fi
+    shell: bash
 
-  # - name: Build the project
-  #   run: npm run build
-  #   shell: bash
+  - name: Run Tests
+    id: run-tests
+    working-directory: ${{ inputs.working-directory }}
+    run: |
+      if npm test --if-present; then
+        echo "Tests passed."
+        # Example of setting an output for the composite action
+        echo "summary=Test results available." >> $GITHUB_OUTPUT
+      else
+        echo "Tests failed."
+        echo "summary=Tests failed, check logs." >> $GITHUB_OUTPUT
+        exit 1
+      fi
+    shell: bash
