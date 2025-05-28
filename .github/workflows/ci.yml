@@ -11,11 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - id: run-ci-checks
+      - name: Run reusable CI checks
+        id: run-ci-checks
         uses: ./.github/actions/ci-checks
         with:
           node-version: "22"
-          run-tests: "false" # Skipping tests, e.g., for hotfix branch
+          # run-tests: "false" # Skipping tests, e.g., for hotfix branch
 
       - name: Use build path from composite output
         run: echo "Build folder is at ${{ steps.run-ci-checks.outputs.build-path }}"
