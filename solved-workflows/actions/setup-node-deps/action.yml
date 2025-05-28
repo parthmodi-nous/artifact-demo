@@ -1,3 +1,4 @@
+# This file defines a reusable GitHub Action to set up Node.js and install dependencies.
 name: "Setup Node and Install Dependencies"
 description: "Reusable step to set up Node.js and install dependencies"
 
