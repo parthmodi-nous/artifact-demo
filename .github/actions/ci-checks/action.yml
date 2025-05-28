@@ -1,0 +1,30 @@
+name: "Frontend CI Checks"
+description: "Reusable CI checks for all React/Next.js projects"
+inputs:
+  node-version:
+    required: false
+    default: "20"
+
+runs:
+  using: "composite"
+  steps:
+  - name: Set up Node.js
+    uses: actions/setup-node@v4
+    with:
+      node-version: ${{ inputs.node-version }}
+
+  - name: Install dependencies
+    run: npm ci
+    shell: bash
+
+  - name: Lint code
+    run: npm run lint
+    shell: bash
+
+  - name: Run tests
+    run: npm test
+    shell: bash
+
+  - name: Build project
+    run: npm run build
+    shell: bash

@@ -1,9 +1,8 @@
-# Automate building an application across multiple OS (Ubuntu/Windows) and Node.js versions (18, 20, 22) using a matrix strategy.
 name: Matrix job demo
 on: workflow_dispatch
 jobs:
   matrix-job:
-    runs-on: ${{matrix.os}}
+    runs-on: ${{ matrix.os}}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -12,10 +11,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Set up Node js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version}}
+          node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
         run: npm ci

@@ -1,0 +1,14 @@
+name: Frontend CI
+
+on: [push, pull_request]
+
+jobs:
+  run-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Frontend CI Checks
+        uses: ./.github/actions/ci-checks
+        with:
+          node-version: "22"
